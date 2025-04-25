@@ -1,5 +1,54 @@
 const API_URL = `http://localhost:8080`;
 
+function fetchEntriesData() {
+    fetch(`${API_URL}/aetherios`)
+        .then(res => res.json())
+        .then(data => {
+            showEntryList(data);
+        })
+        .catch(error => {
+            console.error(`Error Fetching entries: ${error}`);
+            document.getElementById('entries-list').innerHTML = 'Error Loading Entries';
+            
+        });
+}
+
+function showEntryList(data) {
+    const entriesListDiv = document.getElementById('entries-list');
+    const list = document.createDocumentFragment();
+
+    data.map(function (entry) {
+        let div = document.createElement('div');
+        let title = document.createElement('h3');
+        title.innerHTML = `${entry.name}`;
+
+        let element1 = document.createElement('p');
+        element1.textContent = `element: ${entry.element1}`;
+
+        let species = document.createElement('p');
+        species.textContent = `Spieces: ${entry.species}`;
+
+        // let viewLink = document.createElement('a');
+        // viewLink.href = `/aetheriondetail.html?entryid=${entry.id}`;
+        // viewLink.textContent = 'View Details';
+
+        div.appendChild(title);
+        div.appendChild(element1);
+        div.appendChild(species);
+        // div.appendChild(viewLink);
+
+        list.appendChild(div);
+    });
+
+    entriesListDiv.appendChild(list);
+}
+
+function handlePage() {
+    console.log('load all entries');
+    fetchEntriesData();
+}
+
+handlePage();
 // function fetchData() {
 //   fetch(`${API_URL}/aetherios`)
 //     .then(res => {
@@ -123,52 +172,3 @@ const API_URL = `http://localhost:8080`;
 /////////////////////////
 
 
-function fetchEntriesData() {
-    fetch(`${API_URL}/aetherios`)
-        .then(res => res.json())
-        .then(data => {
-            showEntryList(data);
-        })
-        .catch(error => {
-            console.error(`Error Fetching entries: ${error}`);
-            document.getElementById('entries-list').innerHTML = 'Error Loading Entries';
-            
-        });
-}
-
-function showEntryList(data) {
-    const entriesListDiv = document.getElementById('entries-list');
-    const list = document.createDocumentFragment();
-
-    data.map(function (entry) {
-        let div = document.createElement('div');
-        let title = document.createElement('h3');
-        title.textContent = entry.name;
-
-        // let element1 = document.createElement('p');
-        // element1.textContent = `element ${entry.element1}`;
-
-        // let genres = document.createElement('p');
-        // genres.textContent = `Genres: ${entry.species}`;
-
-        // let viewLink = document.createElement('a');
-        // viewLink.href = `/aetheriondetail.html?entryid=${entry.id}`;
-        // viewLink.textContent = 'View Details';
-
-        div.appendChild(title);
-        // div.appendChild(element1);
-        // div.appendChild(genres);
-        // div.appendChild(viewLink);
-
-        list.appendChild(div);
-    });
-
-    entriesListDiv.appendChild(list);
-}
-
-function handlePage() {
-    console.log('load all entries');
-    fetchEntriesData();
-}
-
-handlePage();
