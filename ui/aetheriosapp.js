@@ -21,7 +21,7 @@ function showEntryList(data) {
         let div = document.createElement('div');
         let title = document.createElement('h3');
         // title.innerHTML = `${entry.name}`;
-        title.innerHTML = `<a href="/ui/aetheriondetail.html?id=${entry.id}">${entry.name}</a>`;
+        title.innerHTML = `<a href="/aetheriondetail.html?id=${entry.id}">${entry.name}</a>`;
 
         let element1 = document.createElement('p');
         element1.textContent = `element: ${entry.element1}`;
