@@ -1,18 +1,30 @@
 const API_URL = `http://localhost:8080`;
 
-function fetch(aether_id) {
-  fetch(`${API_URL}/aetherios/${aether_id}`)
-    .then(res => {
-      //console.log("res is ", Object.prototype.toString.call(res));
-      return res.json();
-    })
-    .then(data => {
-      showDetail(data);
-    })
-    .catch(error => {
-      console.log(`Error Fetching data : ${error}`);
-      document.getElementById('posts').innerHTML = 'Error Loading Single Piro Data';
-    });
+// function fetch(aether_id) {
+//   fetch(`${API_URL}/aetherios/${aether_id}`)
+//     .then(res => {
+//       //console.log("res is ", Object.prototype.toString.call(res));
+//       return res.json();
+//     })
+//     .then(data => {
+//       showDetail(data);
+//     })
+//     .catch(error => {
+//       console.log(`Error Fetching data : ${error}`);
+//       document.getElementById('posts').innerHTML = 'Error Loading Single Piro Data';
+//     });
+// }
+function fetchEntriesData(aether_id) {
+    fetch(`${API_URL}/aetherios/${aether_id}`)
+        .then(res => res.json())
+        .then(data => {
+            showDetail(data);
+        })
+        .catch(error => {
+            console.error(`Error Fetching entries: ${error}`);
+            document.getElementById('entry').innerHTML = 'Error single entry';
+            
+        });
 }
 
 
@@ -20,8 +32,8 @@ function parseAetherId() {
     try {
       var url_string = window.location.href.toLowerCase();
       var url = new URL(url_string);
-      var piroid = url.searchParams.get('aetherid');
-      return piroid;
+      var aether_id = url.searchParams.get('id');
+      return aether_id;
     } catch (err) {
       console.log("Issues with Parsing URL Parameter's - " + err);
       return '0';
@@ -35,33 +47,37 @@ function parseAetherId() {
     return humanDateFormat;
   }
 
-  function showDetail(post) {
+  function showDetail(entry) {
     // the data parameter will be a JS array of JS objects
     // this uses a combination of "HTML building" DOM methods (the document createElements) and
     // simple string interpolation (see the 'a' tag on title)
     // both are valid ways of building the html.
-    const ul = document.getElementById('post');
+    const ul = document.getElementById('entry');
     const detail = document.createDocumentFragment();
   
-    console.log('aetherios:', post);
+    console.log('aetherios:', entry);
     let li = document.createElement('div');
     let title = document.createElement('h2');
-    let body = document.createElement('p');
-    // let by = document.createElement('p');
-    // let img = document.createElement('p');
-    title.innerHTML = `${post.name}`;
-    // body.innerHTML = `${post.element}`;
+    title.innerHTML = `${entry.name}`;
 
-//     img.innerHTML = `<img src="http://localhost:8080/api/piros/${post.id}/image" alt="image" width="300" height="300">`;
-//     by.innerHTML = `${post.created} - ${post.id}`;
-//   // http://localhost:8080/api/piros/5/image
+
+    let element1 = document.createElement('p');
+    element1.textContent = `element: ${entry.element1}`;
+
+    // let species = document.createElement('p');
+    // species.textContent = `Spieces: ${entry.species}`;
+
+    // let viewLink = document.createElement('a');
+    // viewLink.href = `/aetheriondetail.html?entryid=${entry.id}`;
+    // viewLink.textContent = 'View Details';
 
     li.appendChild(title);
-    // li.appendChild(body);
-    // li.appendChild(img);
-    // li.appendChild(by);
+    li.appendChild(element1);
+    // div.appendChild(species);
+    // div.appendChild(viewLink);
     detail.appendChild(li);
-  
+
+
     ul.appendChild(detail);
   }
 
@@ -71,7 +87,7 @@ function parseAetherId() {
   
     if (aether_id != null) {
       console.log('found a aetherId');
-      fetch(aether_id);
+      fetchEntriesData(aether_id); // Call the correct function
     }
   }
   
